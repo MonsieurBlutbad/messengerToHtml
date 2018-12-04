@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script>
+        Element.prototype.remove = function() {
+            this.parentElement.removeChild(this);
+        }
+        NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+            for(var i = this.length - 1; i >= 0; i--) {
+                if(this[i] && this[i].parentElement) {
+                    this[i].parentElement.removeChild(this[i]);
+                }
+            }
+        }
+
+        function subst() {
+            var vars = {};
+            var query_strings_from_url = document.location.search.substring(1).split('&');
+            for (var query_string in query_strings_from_url) {
+                if (query_strings_from_url.hasOwnProperty(query_string)) {
+                    var temp_var = query_strings_from_url[query_string].split('=', 2);
+                    vars[temp_var[0]] = decodeURI(temp_var[1]);
+                }
+            }
+            if (parseInt(vars['page']) > 0) {
+                var element = document.getElementsByClassName('page');
+                element[0].textContent = vars['page'];
+            } else {
+                document.getElementById('footer').remove();
+            }
+        }
+        subst();
+    </script>
+{% endblock %}
+{% block body %}
+    <footer id="footer" >
+        <div class="footer-content">
+            Page<span class="page"></span>
+        </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+{% import _self as self %}
+
+{% set micky = 'Michaela Hann' %}
+{% set kay = 'Kay Bader' %}
+
+{% set lastMessage = null %}
+{% set nextMessage = null %}
+{% set lastShownTimestamp = null %}
+
+{% macro weekday(timestamp) %}
+    {% spaceless %}
+        {% set day = timestamp | date('w', 'Europe/Berlin') %}
+        {% if day == 0 %}
+            Sonntag
+        {% elseif day == 1 %}
+            Montag
+        {% elseif day == 2 %}
+            Dienstag
+        {% elseif day == 3 %}
+            Mittwoch
+        {% elseif day == 4 %}
+            Donnerstag
+        {% elseif day == 5 %}
+            Freitag
+        {% elseif day == 6 %}
+            Samstag
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% macro month(timestamp) %}
+    {% spaceless %}
+        {% set month = timestamp | date('m', 'Europe/Berlin') %}
+        {% if month == 1 %}
+            Januar
+        {% elseif month == 2 %}
+            Februar
+        {% elseif month == 3 %}
+            März
+        {% elseif month == 4 %}
+            April
+        {% elseif month == 5 %}
+            Mai
+        {% elseif month == 6 %}
+            Juni
+        {% elseif month == 7 %}
+            Juli
+        {% elseif month == 8 %}
+            August
+        {% elseif month == 9 %}
+            September
+        {% elseif month == 10 %}
+            Oktober
+        {% elseif month == 11 %}
+            November
+        {% elseif month == 12 %}
+            Dezember
+        {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+
+{% block body %}
+    <div class="messages">
+        {% for i in 0..(messages | length - 1) %}
+            {% if not loop.first %}
+                {% set lastMessage = messages[i - 1] %}
+            {% else %}
+                {% set lastMessage = null %}
+            {% endif %}
+
+            {% set message = messages[i] %}
+
+            {% if not loop.last %}
+               {% set nextMessage = messages[i + 1] %}
+            {% else %}
+                {% set nextMessage = null %}
+            {% endif %}
+
+
+            {% set isFirstMessage = not lastMessage | default or lastMessage.senderName != message.senderName %}
+            {% set isSubsequentMessage = lastMessage | default and lastMessage.senderName == message.senderName %}
+            {% set isLastMessage = not nextMessage | default or message.senderName != nextMessage.senderName %}
+            {% set showProfileImage = isLastMessage %}
+            {% if not isLastMessage and nextMessage | default %}
+                {% set willShowDateOrTime = false %}
+                {% set difference = date(nextMessage.timestamp).diff(date(message.timestamp)) %}
+                {% set willShowDateOrTime = difference.h >= 1 %}
+                {% if not willShowDateOrTime %}
+                    {% set willShowDateOrTime = message.timestamp | date ('d.m.Y', 'Europe/Berlin') != nextMessage.timestamp | date ('d.m.Y', 'Europe/Berlin') %}
+                {% endif %}
+                {% set isLastMessage = willShowDateOrTime %}
+            {% endif %}
+
+            {% if lastShownTimestamp %}
+                {% set difference = date(message.timestamp).diff(date(lastMessage.timestamp)) %}
+                {% set showTime = difference.h >= 1 %}
+            {% else %}
+                {% set showTime = true %}
+            {% endif %}
+
+            {% if not lastMessage | default %}
+                {% set showDate = true %}
+            {% else %}
+                {% set showDate = lastMessage.timestamp | date ('d.m.Y', 'Europe/Berlin') != message.timestamp | date ('d.m.Y', 'Europe/Berlin') %}
+            {% endif %}
+
+            <div class="keep-together">
+                <div style="position: absolute; top: 0px; right: 0px;">
+                    <h1>ww</h1><h2>das</h2>
+                    <h3>{{ message.timestamp | date('d', 'Europe/Berlin') }}. {{ self.month(date('m',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h3>
+                </div>
+                {% if showDate or showTime %}
+                    <div class="timestamp">
+                        {% if showDate %}
+                            {{ self.weekday(message.timestamp) }},
+                            {{ message.timestamp | date('d.m.Y', 'Europe/Berlin') }}
+                        {% endif %}
+                        {% if showTime %}
+                            {{ message.timestamp | date('H:i', 'Europe/Berlin') }} Uhr
+                        {% endif %}
+                    </div>
+                    {% set lastShownTimestamp = message.timestamp %}
+                    {% set isFirstMessage = true %}
+                    {% set isSubsequentMessage = false %}
+                {% endif %}
+
+                {% set senderName = message.senderName | lower | replace({' ' : '-'})  %}
+
+                <div data-id="{{ message.id }}" class="message {{ senderName }} {% if isFirstMessage %}first-message{% endif %} {% if isSubsequentMessage %}subsequent-message{% endif %} {% if isLastMessage %}last-message{% endif %}">
+                    {% if showProfileImage %}
+                        <img class="profile-image" src="{{ asset('build/images/' ~ senderName ~ '.jpg') }}" />
+                    {% endif %}
+                    {% if message.photo | default%}
+                        <img class="photo" src="{{ asset('build/images/' ~ message.photo) }}" />
+                    {% else %}
+                        {% set content = message.content | emoji_replace %}
+                        <div class="content-wrapper{% if message.link | default %} share-wrapper-follows{% endif %} {% if content is only_emoji  %} only-emoji{% endif %}">
+                            {% spaceless %}
+                                {{ content | raw}}
+                            {% endspaceless %}
+                            <div class="clearfix"></div>
+                        </div>
+                    {% endif %}
+                    {% if message.link | default %}
+                        <div class="clearfix"></div>
+                        {% if message.ogImage | default and not message.ogTitle | default and not message.ogDescription | default and not message.host | default %}
+                            <img class="photo" src="{{ message.ogImage }}" />
+                        {% elseif message.ogImage | default or message.ogTitle | default or message.ogDescription | default %}
+                            <div class="share-wrapper">
+                                {% if message.ogImage | default %}
+                                    <img class="og-image" src="{{ message.ogImage }}" />
+                                {% endif %}
+                                <div class="share-info-wrapper">
+                                    {% if message.ogTitle | default %}
+                                        <div class="og-title">{{ message.ogTitle }}</div>
+                                    {% endif %}
+                                    {% if message.ogDescription | default %}
+                                        <div class="og-description">{{ message.ogDescription }}</div>
+                                    {% endif %}
+                                    {% if message.host | default %}
+                                        <div class="host">{{ message.host }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

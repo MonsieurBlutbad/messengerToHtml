@@ -1,0 +1,195 @@
+body {
+  padding: 0px 20px;
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+  position: relative;
+  box-sizing: border-box;
+}
+.timestamp {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  margin: 12px 0 12px 20px;
+  text-align: center;
+}
+.message {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2px;
+}
+.message.michaela-hann {
+  float: left;
+}
+.message.michaela-hann .profile-image {
+  left: 0;
+}
+.message.michaela-hann .content-wrapper {
+  background-color: #0084ff;
+  color: #fff;
+}
+.message.michaela-hann .content-wrapper,
+.message.michaela-hann .photo,
+.message.michaela-hann .share-wrapper {
+  float: left;
+  margin-left: 36px;
+  border-top-right-radius: 1.3em;
+  border-bottom-right-radius: 1.3em;
+}
+.message.michaela-hann .content-wrapper .og-image,
+.message.michaela-hann .photo .og-image,
+.message.michaela-hann .share-wrapper .og-image {
+  border-top-right-radius: 1.3em;
+}
+.message.kay-bader {
+  float: right;
+}
+.message.kay-bader .profile-image {
+  right: 0;
+}
+.message.kay-bader .content-wrapper,
+.message.kay-bader .photo,
+.message.kay-bader .share-wrapper {
+  float: right;
+  margin-right: 36px;
+  color: #000;
+  border-top-left-radius: 1.3em;
+  border-bottom-left-radius: 1.3em;
+}
+.message.kay-bader .content-wrapper .og-image,
+.message.kay-bader .photo .og-image,
+.message.kay-bader .share-wrapper .og-image {
+  border-top-left-radius: 1.3em;
+}
+.message.first-message .content-wrapper,
+.message.first-message .photo {
+  border-top-left-radius: 1.3em;
+  border-top-right-radius: 1.3em;
+}
+.message.last-message {
+  margin-bottom: 10px;
+}
+.message.last-message .photo,
+.message.last-message .share-wrapper {
+  border-bottom-left-radius: 1.3em;
+  border-bottom-right-radius: 1.3em;
+}
+.message.last-message .content-wrapper {
+  border-bottom-left-radius: 1.3em;
+  border-bottom-right-radius: 1.3em;
+}
+.message.last-message .content-wrapper.share-wrapper-follows {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.message .profile-image {
+  position: absolute;
+  bottom: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.message .content-wrapper,
+.message .photo {
+  border-radius: 4px;
+}
+.message .share-wrapper {
+  max-width: 55%;
+  border-radius: 4px;
+  border: 1px solid #999999;
+}
+.message .share-wrapper .og-image {
+  width: 100%;
+  max-height: 300px;
+}
+.message .share-wrapper .share-info-wrapper {
+  padding: 0 12px;
+}
+.message .share-wrapper .share-info-wrapper .og-title {
+  color: #999999;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.message .share-wrapper .share-info-wrapper .og-description {
+  color: #000;
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+.message .share-wrapper .share-info-wrapper .host {
+  color: #999999;
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+.message .content-wrapper {
+  max-width: 70%;
+  box-sizing: content-box;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #f1f0f0;
+}
+.message .content-wrapper.only-emoji {
+  margin-top: 5px;
+  background-color: transparent;
+  padding: 0;
+}
+.message .content-wrapper.only-emoji .emoji {
+  width: 32px;
+  height: 32px;
+  vertical-align: initial;
+}
+.message .content-wrapper.only-emoji svg.emoji {
+  width: 36px;
+  height: 36px;
+}
+.message .content-wrapper .emoji {
+  margin: 0 1px 0 1px;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+}
+.message .content-wrapper.share-wrapper-follows {
+  margin-bottom: 2px;
+}
+.message .content-wrapper .content {
+  clear: left;
+  float: left;
+  word-wrap: break-word;
+}
+.message .photo {
+  max-height: 450px;
+  max-width: 55%;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.keep-together {
+  position: relative;
+  page-break-inside: avoid;
+}
+.break-before {
+  page-break-before: always;
+}
+.break-after {
+  page-break-after: always;
+}
+footer {
+  font-size: 10px;
+  color: #999999;
+  text-align: center;
+  padding-top: 10px;
+}
+header {
+  font-size: 10px;
+  color: #999999;
+  text-align: right;
+  padding-bottom: 10px;
+}
+header .header-content {
+  padding-bottom: 2px;
+  border-bottom: 1px solid #e5e5e5;
+}
+/*# sourceMappingURL=app.css.map */
