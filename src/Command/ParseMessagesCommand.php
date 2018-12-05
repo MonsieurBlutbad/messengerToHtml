@@ -74,7 +74,11 @@ class ParseMessagesCommand extends Command
                     $message = new ShareMessage();
                     $message->setLink($originalMessage->share->link);
                     $message->setHost(parse_url($message->getLink(), PHP_URL_HOST));
-                    $meta = $this->getMetaInformationFromUrl($message->getLink());
+                    try {
+                        $meta = $this->getMetaInformationFromUrl($message->getLink());
+                    } catch (\Exception $e) {
+                        $meta = [];
+                    }
                     if (array_key_exists('og:title', $meta)) {
                         $message->setOgTitle($meta['og:title']);
                     } elseif (array_key_exists('title', $meta)) {

@@ -8,6 +8,7 @@
 {% set lastMessage = null %}
 {% set nextMessage = null %}
 {% set lastShownTimestamp = null %}
+{% set chapter = null %}
 
 {% macro weekday(timestamp) %}
     {% spaceless %}
@@ -79,7 +80,6 @@
                 {% set nextMessage = null %}
             {% endif %}
 
-
             {% set isFirstMessage = not lastMessage | default or lastMessage.senderName != message.senderName %}
             {% set isSubsequentMessage = lastMessage | default and lastMessage.senderName == message.senderName %}
             {% set isLastMessage = not nextMessage | default or message.senderName != nextMessage.senderName %}
@@ -107,10 +107,22 @@
                 {% set showDate = lastMessage.timestamp | date ('d.m.Y', 'Europe/Berlin') != message.timestamp | date ('d.m.Y', 'Europe/Berlin') %}
             {% endif %}
 
+            {% set monthAndYear = self.month(date(message.timestamp, 'm',  'Europe/Berlin')) ~ ' ' ~ message.timestamp | date('Y',  'Europe/Berlin') %}
+
+            {% if chapter != monthAndYear %}
+                {% set chapter = monthAndYear %}
+                <div class="break-before">
+                    <div class="break-after">
+                        {% include 'inc/chapter.html.twig' with {chapter: chapter} %}
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="keep-together">
-                <div style="position: absolute; top: 0px; right: 0px;">
-                    <h1>ww</h1><h2>das</h2>
-                    <h3>{{ message.timestamp | date('d', 'Europe/Berlin') }}. {{ self.month(date('m',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h3>
+                <div style="position: absolute; top: 0px; right: -500px;">
+                    <h1>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h1>
+                    <h2>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h2>
+                    <h3>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h3>
                 </div>
                 {% if showDate or showTime %}
                     <div class="timestamp">
@@ -130,24 +142,22 @@
                 {% set senderName = message.senderName | lower | replace({' ' : '-'})  %}
 
                 <div data-id="{{ message.id }}" class="message {{ senderName }} {% if isFirstMessage %}first-message{% endif %} {% if isSubsequentMessage %}subsequent-message{% endif %} {% if isLastMessage %}last-message{% endif %}">
-                    {% if showProfileImage %}
-                        <img class="profile-image" src="{{ asset('build/images/' ~ senderName ~ '.jpg') }}" />
-                    {% endif %}
                     {% if message.photo | default%}
                         <img class="photo" src="{{ asset('build/images/' ~ message.photo) }}" />
+                        <div class="clearfix"></div>
                     {% else %}
                         {% set content = message.content | emoji_replace %}
                         <div class="content-wrapper{% if message.link | default %} share-wrapper-follows{% endif %} {% if content is only_emoji  %} only-emoji{% endif %}">
                             {% spaceless %}
                                 {{ content | raw}}
                             {% endspaceless %}
-                            <div class="clearfix"></div>
                         </div>
+                        <div class="clearfix"></div>
                     {% endif %}
                     {% if message.link | default %}
-                        <div class="clearfix"></div>
                         {% if message.ogImage | default and not message.ogTitle | default and not message.ogDescription | default and not message.host | default %}
                             <img class="photo" src="{{ message.ogImage }}" />
+                            <div class="clearfix"></div>
                         {% elseif message.ogImage | default or message.ogTitle | default or message.ogDescription | default %}
                             <div class="share-wrapper">
                                 {% if message.ogImage | default %}
@@ -165,10 +175,13 @@
                                     {% endif %}
                                 </div>
                             </div>
+                            <div class="clearfix"></div>
                         {% endif %}
                     {% endif %}
+                    {% if showProfileImage %}
+                        <img class="profile-image" src="{{ asset('build/images/' ~ senderName ~ '.jpg') }}" />
+                    {% endif %}
                 </div>
-                <div class="clearfix"></div>
             </div>
         {% endfor %}
     </div>

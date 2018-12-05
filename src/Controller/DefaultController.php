@@ -14,7 +14,7 @@ class DefaultController extends AbstractController {
     public function index()
     {
         $repo = $this->get('doctrine')->getRepository('App:Message');
-        $messages = $repo->findBy([], ['timestamp' => 'asc'], 100);
+        $messages = $repo->findBy([], ['timestamp' => 'asc'], 300, 500);
         return $this->render('index.html.twig', [
             'messages' => $messages
         ]);
@@ -22,12 +22,12 @@ class DefaultController extends AbstractController {
 
     public function footer()
     {
-        return $this->render('footer.html.twig');
+        return $this->render('inc/footer.html.twig');
     }
 
     public function header()
     {
-        return $this->render('header.html.twig');
+        return $this->render('inc/header.html.twig');
     }
 
 }

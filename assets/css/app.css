@@ -16,7 +16,7 @@ body {
   margin-bottom: 2px;
 }
 .message.michaela-hann {
-  float: left;
+  text-align: left;
 }
 .message.michaela-hann .profile-image {
   left: 0;
@@ -39,7 +39,7 @@ body {
   border-top-right-radius: 1.3em;
 }
 .message.kay-bader {
-  float: right;
+  text-align: right;
 }
 .message.kay-bader .profile-image {
   right: 0;
@@ -96,8 +96,9 @@ body {
   border: 1px solid #999999;
 }
 .message .share-wrapper .og-image {
-  width: 100%;
+  max-width: 100%;
   max-height: 300px;
+  border-radius: 4px;
 }
 .message .share-wrapper .share-info-wrapper {
   padding: 0 12px;
@@ -192,4 +193,3 @@ header .header-content {
   padding-bottom: 2px;
   border-bottom: 1px solid #e5e5e5;
 }
-/*# sourceMappingURL=app.css.map */

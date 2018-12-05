@@ -27,3 +27,4 @@ yarn-error.log
 assets/data/messages
 assets/images/*
 assets/images/messages
+.DS_Store
