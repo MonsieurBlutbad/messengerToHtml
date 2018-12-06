@@ -22,7 +22,7 @@
                     vars[temp_var[0]] = decodeURI(temp_var[1]);
                 }
             }
-            if (parseInt(vars['page']) > 0) {
+            if (parseInt(vars['page']) > 4) {
                 var element = document.getElementsByClassName('page');
                 element[0].textContent = vars['page'];
             } else {

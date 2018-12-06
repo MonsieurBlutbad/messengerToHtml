@@ -1,5 +1,5 @@
 body {
-  padding: 0px 20px;
+  padding: 20px 30px;
   font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   position: relative;
   box-sizing: border-box;
@@ -14,8 +14,6 @@ body {
   position: relative;
   width: 100%;
   margin-bottom: 2px;
-}
-.message.michaela-hann {
   text-align: left;
 }
 .message.michaela-hann .profile-image {
@@ -37,9 +35,6 @@ body {
 .message.michaela-hann .photo .og-image,
 .message.michaela-hann .share-wrapper .og-image {
   border-top-right-radius: 1.3em;
-}
-.message.kay-bader {
-  text-align: right;
 }
 .message.kay-bader .profile-image {
   right: 0;

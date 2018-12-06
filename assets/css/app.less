@@ -7,7 +7,7 @@
 @border-radius-small: 4px;
 
 body {
-    padding: 0px 20px;
+    padding: 20px 30px;
     font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
     position: relative;
     box-sizing: border-box;
@@ -25,13 +25,12 @@ body {
     //  -moz-column-count: 2; /* Firefox */
     //  column-count: 2;
 }
-
 .message {
     position: relative;
     width: 100%;
     margin-bottom: 2px;
+    text-align: left;
     &.michaela-hann {
-        text-align: left;
         .profile-image {
             left: 0;
         }
@@ -54,10 +53,11 @@ body {
     }
 
     &.kay-bader {
-        text-align: right;
         .profile-image {
             right: 0;
             //right: -82px;
+        }
+        .content-wrapper {
         }
         .content-wrapper,
         .photo,
@@ -144,6 +144,10 @@ body {
     }
     .content-wrapper {
         max-width: 70%;
+        .content-text {
+            //max-width: none;
+            //float: left;
+        }
         box-sizing: content-box;
         padding: 6px 12px;
         font-size: 14px;

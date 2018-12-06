@@ -14,9 +14,9 @@ class DefaultController extends AbstractController {
     public function index()
     {
         $repo = $this->get('doctrine')->getRepository('App:Message');
-        $messages = $repo->findBy([], ['timestamp' => 'asc'], 300, 500);
+        $messages = $repo->findBy([], ['timestamp' => 'asc']);
         return $this->render('index.html.twig', [
-            'messages' => $messages
+            'messages' => array_splice($messages, count($messages) / 2, count($messages) / 2)
         ]);
     }
 

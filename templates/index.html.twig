@@ -64,6 +64,19 @@
 
 
 {% block body %}
+    <div class="break-before"></div>
+    <div class="page">
+        <h1>Timelovers</h1>
+        <h2>Band 1: 29. Dezember - 1. März</h2>
+        <small>Geschrieben von Micky Hann und Kay Bader</small>
+    </div>
+
+    <div class="break-after"></div>
+    <div class="break-before"></div>
+        <div class="page">
+        </div>
+    <div class="break-after"></div>
+
     <div class="messages">
         {% for i in 0..(messages | length - 1) %}
             {% if not loop.first %}
@@ -149,8 +162,9 @@
                         {% set content = message.content | emoji_replace %}
                         <div class="content-wrapper{% if message.link | default %} share-wrapper-follows{% endif %} {% if content is only_emoji  %} only-emoji{% endif %}">
                             {% spaceless %}
-                                {{ content | raw}}
+                                <span class="content-text">{{ content | raw}}</span>
                             {% endspaceless %}
+                            <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
                     {% endif %}
