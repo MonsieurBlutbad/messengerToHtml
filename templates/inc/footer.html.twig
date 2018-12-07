@@ -22,20 +22,16 @@
                     vars[temp_var[0]] = decodeURI(temp_var[1]);
                 }
             }
-            if (parseInt(vars['page']) > 4) {
-                var element = document.getElementsByClassName('page');
-                element[0].textContent = vars['page'];
-            } else {
-                document.getElementById('footer').remove();
-            }
+            var element = document.getElementsByClassName('page');
+            element[0].textContent = parseInt(vars['page']) + parseInt(element[0].getAttribute('data-offset'));
         }
         subst();
     </script>
 {% endblock %}
 {% block body %}
-    <footer id="footer" >
+    <footer id="footer">
         <div class="footer-content">
-            <span class="page"></span>
+            <span class="page" data-offset="{{ offset }}"></span>
         </div>
     </footer>
 {% endblock %}

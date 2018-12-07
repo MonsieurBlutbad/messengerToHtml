@@ -7,22 +7,46 @@
  */
 namespace App\Controller;
 
+use App\Entity\Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController {
 
-    public function index()
+    public function index($start = null, $end = null)
     {
         $repo = $this->get('doctrine')->getRepository('App:Message');
-        $messages = $repo->findBy([], ['timestamp' => 'asc']);
+        $allMessages = $repo->findBy([], ['timestamp' => 'asc']);
+        $start = $start? \DateTime::createFromFormat('Y-m-d H:i:s', $start . '00:00:00') : null;
+        $end = $end? \DateTime::createFromFormat('Y-m-d H:i:s', $end . ' 23:59:59') : null;
+        $messages = array_filter($allMessages, function(Message $message) use ($start, $end) {
+            if ($start) {
+                if ($message->getTimestamp()->getTimestamp() < $start->getTimestamp()) {
+                    return false;
+                }
+            }
+            if ($end) {
+                if ($message->getTimestamp()->getTimestamp() > $end->getTimestamp()) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
         return $this->render('index.html.twig', [
-            'messages' => array_splice($messages, count($messages) / 2, count($messages) / 2)
+            'messages' => array_values($messages)
         ]);
     }
 
-    public function footer()
+    public function titelei()
     {
-        return $this->render('inc/footer.html.twig');
+        return $this->render('titelei.html.twig');
+    }
+
+    public function footer($offset = 0)
+    {
+        return $this->render('inc/footer.html.twig', [
+            'offset' => $offset
+        ]);
     }
 
     public function header()

@@ -9,10 +9,11 @@
 {% set nextMessage = null %}
 {% set lastShownTimestamp = null %}
 {% set chapter = null %}
+{% set part = null %}
 
 {% macro weekday(timestamp) %}
     {% spaceless %}
-        {% set day = timestamp | date('w', 'Europe/Berlin') %}
+        {% set day = timestamp | date('w') %}
         {% if day == 0 %}
             Sonntag
         {% elseif day == 1 %}
@@ -33,7 +34,7 @@
 
 {% macro month(timestamp) %}
     {% spaceless %}
-        {% set month = timestamp | date('m', 'Europe/Berlin') %}
+        {% set month = timestamp | date('m') %}
         {% if month == 1 %}
             Januar
         {% elseif month == 2 %}
@@ -64,19 +65,7 @@
 
 
 {% block body %}
-    <div class="break-before"></div>
-    <div class="page">
-        <h1>Timelovers</h1>
-        <h2>Band 1: 29. Dezember - 1. März</h2>
-        <small>Geschrieben von Micky Hann und Kay Bader</small>
-    </div>
-
-    <div class="break-after"></div>
-    <div class="break-before"></div>
-        <div class="page">
-        </div>
-    <div class="break-after"></div>
-
+{% if messages |default %}
     <div class="messages">
         {% for i in 0..(messages | length - 1) %}
             {% if not loop.first %}
@@ -96,16 +85,17 @@
             {% set isFirstMessage = not lastMessage | default or lastMessage.senderName != message.senderName %}
             {% set isSubsequentMessage = lastMessage | default and lastMessage.senderName == message.senderName %}
             {% set isLastMessage = not nextMessage | default or message.senderName != nextMessage.senderName %}
-            {% set showProfileImage = isLastMessage %}
             {% if not isLastMessage and nextMessage | default %}
                 {% set willShowDateOrTime = false %}
                 {% set difference = date(nextMessage.timestamp).diff(date(message.timestamp)) %}
                 {% set willShowDateOrTime = difference.h >= 1 %}
                 {% if not willShowDateOrTime %}
-                    {% set willShowDateOrTime = message.timestamp | date ('d.m.Y', 'Europe/Berlin') != nextMessage.timestamp | date ('d.m.Y', 'Europe/Berlin') %}
+                    {% set willShowDateOrTime = (message.timestamp | date ('d.m.Y')) != (nextMessage.timestamp | date ('d.m.Y')) %}
                 {% endif %}
                 {% set isLastMessage = willShowDateOrTime %}
             {% endif %}
+
+            {% set showProfileImage = isLastMessage %}
 
             {% if lastShownTimestamp %}
                 {% set difference = date(message.timestamp).diff(date(lastMessage.timestamp)) %}
@@ -117,34 +107,43 @@
             {% if not lastMessage | default %}
                 {% set showDate = true %}
             {% else %}
-                {% set showDate = lastMessage.timestamp | date ('d.m.Y', 'Europe/Berlin') != message.timestamp | date ('d.m.Y', 'Europe/Berlin') %}
+                {% set showDate = lastMessage.timestamp | date ('d.m.Y') != message.timestamp | date ('d.m.Y') %}
             {% endif %}
 
-            {% set monthAndYear = self.month(date(message.timestamp, 'm',  'Europe/Berlin')) ~ ' ' ~ message.timestamp | date('Y',  'Europe/Berlin') %}
+            {% set day =  message.timestamp | date('d') ~ '. ' ~ self.month(date(message.timestamp, 'm')) ~ ' ' ~ message.timestamp | date('Y') %}
+            {% set monthAndYear =  self.month(date(message.timestamp, 'm')) ~ ' ' ~ message.timestamp | date('Y') %}
 
-            {% if chapter != monthAndYear %}
-                {% set chapter = monthAndYear %}
-                <div class="break-before">
-                    <div class="break-after">
-                        {% include 'inc/chapter.html.twig' with {chapter: chapter} %}
-                    </div>
-                </div>
+            {% if part != monthAndYear %}
+                {% if part is not null %}
+                    <div class="break-before"></div>
+                {% endif %}
+                {% set part = monthAndYear %}
+                {% include 'inc/part.html.twig' with {part: part} %}
+                <div class="break-after"></div>
+            {% endif %}
+
+            {% if chapter != day %}
+                {% if chapter is not null %}
+                    <div class="break-before"></div>
+                {% endif %}
+                {% set chapter = day %}
+                {% include 'inc/chapter.html.twig' with {chapter: chapter} %}
             {% endif %}
 
             <div class="keep-together">
                 <div style="position: absolute; top: 0px; right: -500px;">
-                    <h1>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h1>
-                    <h2>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h2>
-                    <h3>{{ message.timestamp | date('d', 'Europe/Berlin') }} . {{ self.month(date(message.timestamp, 'm',  'Europe/Berlin')) }} {{ message.timestamp | date('Y', 'Europe/Berlin') }}</h3>
+                    <h1>{{ message.timestamp | date('d') }} . {{ self.month(date(message.timestamp, 'm')) }} {{ message.timestamp | date('Y') }}</h1>
+                    <h2>{{ message.timestamp | date('d') }} . {{ self.month(date(message.timestamp, 'm')) }} {{ message.timestamp | date('Y') }}</h2>
+                    <h3>{{ message.timestamp | date('d') }} . {{ self.month(date(message.timestamp, 'm')) }} {{ message.timestamp | date('Y') }}</h3>
                 </div>
                 {% if showDate or showTime %}
                     <div class="timestamp">
                         {% if showDate %}
                             {{ self.weekday(message.timestamp) }},
-                            {{ message.timestamp | date('d.m.Y', 'Europe/Berlin') }}
+                            {{ message.timestamp | date('d.m.Y') }}
                         {% endif %}
                         {% if showTime %}
-                            {{ message.timestamp | date('H:i', 'Europe/Berlin') }} Uhr
+                            {{ message.timestamp | date('H:i') }} Uhr
                         {% endif %}
                     </div>
                     {% set lastShownTimestamp = message.timestamp %}
@@ -199,4 +198,5 @@
             </div>
         {% endfor %}
     </div>
+{% endif %}
 {% endblock %}

@@ -22,11 +22,11 @@
                     vars[temp_var[0]] = decodeURI(temp_var[1]);
                 }
             }
-            if (parseInt(vars['page']) > 4) {
+            if (parseInt(vars['page']) > 1) {
                 var element = document.getElementsByClassName('section');
                 element[0].textContent = vars['section'];
             } else {
-                document.getElementById('header').remove();
+                document.getElementsByClassName('header-content').remove();
             }
         }
         subst();

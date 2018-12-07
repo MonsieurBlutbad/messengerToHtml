@@ -284,7 +284,7 @@ class EmojiRuntime implements RuntimeExtensionInterface
 
         foreach (self::EMOJI_MAP as $emoji) {
             if (array_key_exists('image', $emoji)) {
-                $src =  $package->getUrl('build/images/emojis/' . $emoji['image'] . '.png');
+                $src =  $package->getUrl('/build/images/emojis/' . $emoji['image'] . '.png');
                 $replacement = '<img class="emoji" src="' . $src . '" />' ;
             } elseif (array_key_exists('svg', $emoji)) {
                 $replacement = $emoji['svg'];

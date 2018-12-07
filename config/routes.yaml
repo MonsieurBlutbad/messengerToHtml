@@ -1,9 +1,21 @@
 index:
-  path:     /
+  path:     /messages
   controller: App\Controller\DefaultController::index
+
+index_start_end:
+  path:     /messages/{start}/{end}
+  controller: App\Controller\DefaultController::index
+
+titelei:
+  path:     /titelei
+  controller: App\Controller\DefaultController::titelei
 
 footer:
   path:     /footer
+  controller: App\Controller\DefaultController::footer
+
+footer_offset:
+  path:     /footer/{offset}
   controller: App\Controller\DefaultController::footer
 
 header:
