@@ -94,7 +94,7 @@ body {
 }
 .message .share-wrapper .og-image {
   max-width: 100%;
-  max-height: 450px;
+  max-height: 550px;
   border-radius: 6px;
 }
 .message .share-wrapper .share-info-wrapper {
@@ -163,17 +163,20 @@ body {
   z-index: 100;
   position: relative;
 }
-.chapter,
-.part {
+.chapter {
   padding-top: 80px;
-  padding-bottom: 120px;
+  padding-bottom: 60px;
 }
-.chapter h1,
-.part h1,
-.chapter h2,
-.part h2 {
+.chapter h2 {
   text-align: center;
-  font-size: 33px;
+  font-size: 24px;
+}
+.part {
+  padding-top: 380px;
+}
+.part h1 {
+  text-align: center;
+  font-size: 36px;
 }
 .clearfix::after {
   content: "";
