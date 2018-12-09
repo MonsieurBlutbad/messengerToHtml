@@ -37,8 +37,20 @@ class DefaultController extends AbstractController {
         ]);
     }
 
+    public function chapter($chapter)
+    {
+        $repo = $this->get('doctrine')->getRepository('App:Message');
+        $messages = $repo->findBy(['chapter' => $chapter], ['timestamp' => 'asc']);
+        $chapter = $this->get('doctrine')->getRepository('App:Chapter')->findOneById($chapter);
+        return $this->render('index.html.twig', [
+            'messages' => $messages,
+            'chapterObject' => $chapter
+        ]);
+    }
+
     public function titelei()
     {
+
         return $this->render('titelei.html.twig');
     }
 

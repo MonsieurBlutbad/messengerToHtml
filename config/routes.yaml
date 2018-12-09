@@ -2,6 +2,10 @@ index:
   path:     /messages
   controller: App\Controller\DefaultController::index
 
+index_chapter:
+  path:     /messages/{chapter}
+  controller: App\Controller\DefaultController::chapter
+
 index_start_end:
   path:     /messages/{start}/{end}
   controller: App\Controller\DefaultController::index

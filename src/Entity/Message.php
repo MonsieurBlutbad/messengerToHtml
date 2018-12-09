@@ -47,6 +47,11 @@ abstract class Message
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $chapter;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,5 +91,21 @@ abstract class Message
         $this->content = $content;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChapter()
+    {
+        return $this->chapter;
+    }
+
+    /**
+     * @param mixed $chapter
+     */
+    public function setChapter($chapter): void
+    {
+        $this->chapter = $chapter;
     }
 }

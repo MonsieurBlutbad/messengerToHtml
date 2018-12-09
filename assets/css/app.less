@@ -112,12 +112,11 @@ body {
         border-radius: @border-radius-small
     }
     .share-wrapper {
-        max-width: 55%;
+        max-width: 42%;
         border-radius: @border-radius-small;
         border: 1pt solid @color-gray;
         .og-image {
-            max-width: 100%;
-            max-height: 550px;
+            width: 100%;
             border-radius: @border-radius-small;
         }
         .share-info-wrapper {
@@ -127,6 +126,8 @@ body {
                 font-size: 22px;
                 font-weight: 600;
                 margin-top: 9px;
+                overflow: hidden;
+                max-height: 54px;
             }
             .og-description {
                 color: @color-black;
@@ -134,6 +135,8 @@ body {
                 font-weight: normal;
                 margin-bottom: 9px;
                 margin-top: 9px;
+                overflow: hidden;
+                max-height: 54px;
             }
             .host {
                 color: @color-gray;
@@ -141,6 +144,7 @@ body {
                 font-weight: normal;
                 margin-bottom: 9px;
                 margin-top: 9px;
+                overflow: hidden;
             }
         }
     }
@@ -194,8 +198,8 @@ body {
 }
 
 .chapter {
-    padding-top: 80px;
-    padding-bottom: 60px;
+    padding-top: 40px;
+    padding-bottom: 40px;
     h2 {
         text-align: center;
         font-size: 24px;
@@ -249,19 +253,18 @@ header {
 }
 
 .titelei {
-    .schmutztitel {
+    .schmutztitel, .haupttitel {
         text-align: center;
-        h1 {
-
-        }
+        padding-top: 200px;
     }
     .haupttitel {
-        text-align: center;
         h1 {
-
+            margin-bottom: 0px;
+            font-size: 100px;
         }
         h2 {
-
+            margin-top: 0px;
+            font-size: 24px;
         }
     }
 }
