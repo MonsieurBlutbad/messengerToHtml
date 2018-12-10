@@ -164,7 +164,7 @@
                         <img class="photo" src="{{ asset('build/images/' ~ message.photo) }}" />
                         <div class="clearfix"></div>
                     {% else %}
-                        {% set content = message.content | emoji_replace %}
+                        {% set content = message.content | emoji_replace(senderName) %}
                         <div class="content-wrapper{% if message.link | default %} share-wrapper-follows{% endif %} {% if content is only_emoji  %} only-emoji{% endif %}">
                             {% spaceless %}
                                 <span class="content-text">{{ content | raw}}</span>

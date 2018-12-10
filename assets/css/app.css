@@ -2,9 +2,10 @@ body {
   font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   position: relative;
   box-sizing: border-box;
+  background: white;
 }
 .timestamp {
-  color: rgba(0, 0, 0, 0.4);
+  color: #999999;
   font-size: 18px;
   margin: 15px 0;
   text-align: center;
@@ -133,8 +134,8 @@ body {
 }
 .message .content-wrapper.only-emoji {
   margin-top: 7.5px;
-  background-color: transparent;
   padding: 0;
+  background: none;
 }
 .message .content-wrapper.only-emoji .emoji {
   width: 48px;
@@ -163,9 +164,10 @@ body {
   max-height: 450px;
   max-width: 55%;
 }
-.message img {
-  z-index: 100;
+img {
+  z-index: 99999 !important;
   position: relative;
+  opacity: 1 !important;
 }
 .chapter {
   padding-top: 40px;
@@ -215,6 +217,10 @@ header {
   text-align: center;
   padding-top: 200px;
 }
+.titelei .widmung {
+  text-align: center;
+  padding-top: 436px;
+}
 .titelei .haupttitel h1 {
   margin-bottom: 0px;
   font-size: 100px;
@@ -223,4 +229,3 @@ header {
   margin-top: 0px;
   font-size: 24px;
 }
-/*# sourceMappingURL=app.css.map */

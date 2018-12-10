@@ -8,8 +8,7 @@
 
 namespace App\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\ResultSetMapping;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,75 +20,87 @@ class CreatePdfsCommand extends Command
 
     const PAGE_SIZE = 'A5';
     const MESSAGES_URL = 'http://127.0.0.1:8000/messages';
-    const TITELEI_URL = 'http://127.0.0.1:8000/titelei';
+    const BASE_URL = 'http://127.0.0.1:8000/';
     const FOOTER_URL = 'http://127.0.0.1:8000/footer';
     const HEADER_URL = 'http://127.0.0.1:8000/header';
     const OUTPUT_FOLDER = 'pdf';
 
-    const CHAPTERS = [
-        '2017-12-29',
+    const BOOKS = [
+        [
+            'titelei',
+            '2017-12-29',
+            '2017-12-30',
+            '2017-12-31',
+            '2018-01-01',
+            '2018-01-02',
+            '2018-01-03',
+            '2018-01-04',
+            '2018-01-05',
+            '2018-01-06',
+            '2018-01-07',
+            '2018-01-08',
+            '2018-01-09',
+            '2018-01-10',
+            '2018-01-11',
+            '2018-01-12',
+            '2018-01-13',
+            '2018-01-14',
+            '2018-01-15',
+            '2018-01-16',
+            '2018-01-17',
+            '2018-01-18',
+            '2018-01-19',
+            '2018-01-20',
+            '2018-01-21',
+            '2018-01-22',
+            '2018-01-23',
+            '2018-01-24',
+            '2018-01-25',
+            '2018-01-26',
+            '2018-01-27',
+            '2018-01-28',
+            '2018-01-29',
+            '2018-01-30',
+            '2018-01-31',
+            '2018-02-01',
+            '2018-02-02',
+            '2018-02-03',
+            '2018-02-04',
+            '2018-02-05',
+            '2018-02-06',
+            '2018-02-07',
+            '2018-02-08',
+            '2018-02-09',
+            '2018-02-10',
+            '2018-02-11',
+            '2018-02-12',
+            '2018-02-13',
+            '2018-02-14',
+            '2018-02-15',
+            '2018-02-16',
+            '2018-02-17',
+            '2018-02-18',
+            '2018-02-19',
+            '2018-02-20',
+            '2018-02-21',
+            '2018-02-22',
+            '2018-02-23',
+            '2018-02-24',
+            '2018-02-25',
+            '2018-02-26',
+            '2018-02-27',
+            '2018-02-28',
+            '2018-03-01',
+        ]
+    ];
+
+    const REMOVE_LAST_PAGE = [
         '2017-12-30',
-        '2017-12-31',
         '2018-01-01',
-        '2018-01-02',
-        '2018-01-03',
-        '2018-01-04',
-        '2018-01-05',
         '2018-01-06',
-        '2018-01-07',
-        '2018-01-08',
-        '2018-01-09',
-        '2018-01-10',
-        '2018-01-11',
-        '2018-01-12',
-        '2018-01-13',
-        '2018-01-14',
-        '2018-01-15',
-        '2018-01-16',
         '2018-01-17',
-        '2018-01-18',
-        '2018-01-19',
-        '2018-01-20',
-        '2018-01-21',
-        '2018-01-22',
-        '2018-01-23',
-        '2018-01-24',
-        '2018-01-25',
-        '2018-01-26',
-        '2018-01-27',
-        '2018-01-28',
-        '2018-01-29',
-        '2018-01-30',
-        '2018-01-31',
-        '2018-02-01',
-        '2018-02-02',
-        '2018-02-03',
-        '2018-02-04',
-        '2018-02-05',
-        '2018-02-06',
-        '2018-02-07',
-        '2018-02-08',
         '2018-02-09',
-        '2018-02-10',
-        '2018-02-11',
-        '2018-02-12',
-        '2018-02-13',
         '2018-02-14',
-        '2018-02-15',
-        '2018-02-16',
-        '2018-02-17',
-        '2018-02-18',
-        '2018-02-19',
-        '2018-02-20',
-        '2018-02-21',
-        '2018-02-22',
-        '2018-02-23',
-        '2018-02-24',
-        '2018-02-25',
-        '2018-02-26',
-        '2018-02-27',
-        '2018-02-28',
-        '2018-03-01',
     ];
 
     protected function configure()
@@ -97,35 +108,46 @@ class CreatePdfsCommand extends Command
         $this
             // the name of the command (the part after "bin/console")
             ->setName('app:create-pdfs')
+            ->addArgument('key', InputArgument::OPTIONAL)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $totalPageCount = 0;
-        $output->writeln('titelei');
-        $processAsString = $this->getProcessAsString('titelei',[
-            'url' => self::TITELEI_URL,
-            'hideHeader' => true,
-            'hideFooter' => true,
-        ]);
-        $this->process($processAsString, $output);
-        $pageCount = $this->countPages(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $this->getPathToPdf('titelei'));
-        $totalPageCount += $pageCount;
-        $output->writeln($pageCount . '/' . $totalPageCount . ' pages');
+        $keyArgument = $input->getArgument('key');
 
-        foreach (self::CHAPTERS as $chapter) {
-            $output->writeln($chapter);
-            $processAsString = $this->getProcessAsString($chapter, [
-                'chapter' => $chapter,
-                'offset' => $totalPageCount
-            ]);
-            $this->process($processAsString, $output);
-
-            $pageCount = $this->countPages(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $this->getPathToPdf($chapter));
-            $totalPageCount += $pageCount;
-            $output->writeln($pageCount . '/' . $totalPageCount . ' pages');
+        foreach(self::BOOKS as $i => $book) {
+            $totalPageCount = 0;
+            $output->writeln('Book ' . $i);
+            foreach ($book as $chapter) {
+                if ($keyArgument && $keyArgument !== $chapter) {
+                    continue;
+                }
+                $output->writeln($chapter);
+                $options = [];
+                if (strpos($chapter, 'titelei') === 0) {
+                    $options = [
+                        'url' => self::BASE_URL . $chapter,
+                        'hideHeader' => true,
+                        'hideFooter' => true
+                    ];
+                } else {
+                    $options = [
+                        'chapter' => $chapter,
+                        'offset' => $totalPageCount
+                    ];
+                }
+                $processAsString = $this->getProcessAsString($chapter, $options);
+                $this->process($processAsString, $output);
+                $pageCount = $this->countPages($this->getRelativePathToPdf($chapter));
+                $totalPageCount += $pageCount;
+                if (in_array($chapter, self::REMOVE_LAST_PAGE, true)) {
+                    $totalPageCount --;
+                }
+                $output->writeln($pageCount . '/' . $totalPageCount . ' pages');
+            }
         }
+
     }
 
     protected function process($processAsString, $output)
@@ -171,6 +193,11 @@ class CreatePdfsCommand extends Command
         $processAsString .= ' ' . $this->getPathToPdf($key);
 
         return $processAsString;
+    }
+
+    protected function getRelativePathToPdf($name)
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $this->getPathToPdf($name);
     }
 
     protected function getPathToPdf($name)

@@ -50,8 +50,17 @@ class DefaultController extends AbstractController {
 
     public function titelei()
     {
-
         return $this->render('titelei.html.twig');
+    }
+
+    public function titelei01()
+    {
+        return $this->render('titelei01.html.twig');
+    }
+
+    public function titelei02()
+    {
+        return $this->render('titelei02.html.twig');
     }
 
     public function footer($offset = 0)

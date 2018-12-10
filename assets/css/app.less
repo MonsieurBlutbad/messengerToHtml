@@ -1,7 +1,7 @@
 @background-color-sender: #0084ff;
 @background-color-recipient: #f1f0f0;
 @color-white: #fff;
-@color-gray: rgb(153, 153, 153);
+@color-gray: #999999;
 @color-black: #000;
 @border-radius-large: 1.3em;
 @border-radius-small: 6px;
@@ -10,10 +10,11 @@ body {
     font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
     position: relative;
     box-sizing: border-box;
+    background: white;
 }
 
 .timestamp {
-    color: rgba(0, 0, 0, .40);
+    color:@color-gray;
     font-size: 18px;
     margin: 15px 0;
     text-align: center;
@@ -160,8 +161,8 @@ body {
         background-color: @background-color-recipient;
         &.only-emoji {
             margin-top: 7.5px;
-            background-color: transparent;
             padding: 0;
+            background: none;
             .emoji {
                 width: 48px;
                 height: 48px;
@@ -191,10 +192,11 @@ body {
         max-height: 450px;
         max-width: 55%;
     }
-    img {
-        z-index: 100;
-        position: relative;
-    }
+}
+img {
+    z-index: 99999 !important;
+    position: relative;
+    opacity: 1 !important;
 }
 
 .chapter {
@@ -256,6 +258,10 @@ header {
     .schmutztitel, .haupttitel {
         text-align: center;
         padding-top: 200px;
+    }
+    .widmung {
+        text-align: center;
+        padding-top: 436px;
     }
     .haupttitel {
         h1 {

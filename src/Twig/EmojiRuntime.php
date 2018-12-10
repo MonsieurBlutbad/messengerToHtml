@@ -281,19 +281,18 @@ class EmojiRuntime implements RuntimeExtensionInterface
     }
 
     public function isOnlyEmoji($string) {
-        $regex = '/^((<img class="emoji"(\s)*src="[\w\/\.]*"(\s)*\/>(\s)*)+)|(<svg class="emoji".*<\/svg>)$/';
+        $regex = '/^((<img class="emoji"(\s)*src="[\w\/\.-]*"(\s)*\/>(\s)*)+)|(<svg class="emoji".*<\/svg>)$/';
         $string = preg_replace($regex, '', $string);
         $string = trim($string);
-        return !mb_strlen($string) > 0;
+        return !(mb_strlen($string) > 0);
     }
 
-    public function emojiReplace($string)
+    public function emojiReplace($string, $sender)
     {
         $package = new Package(new EmptyVersionStrategy());
-
         foreach (self::EMOJI_MAP as $emoji) {
             if (array_key_exists('image', $emoji)) {
-                $src =  $package->getUrl('/build/images/emojis/' . $emoji['image'] . '.png');
+                $src =  $package->getUrl('/build/images/emojis/' . $emoji['image'] . '-' . $sender . '.jpg');
                 $replacement = '<img class="emoji" src="' . $src . '" />' ;
             } elseif (array_key_exists('svg', $emoji)) {
                 $replacement = $emoji['svg'];
@@ -309,6 +308,10 @@ class EmojiRuntime implements RuntimeExtensionInterface
                     $string = str_ireplace($search, $replacement, $string);
                 }
             }
+        }
+
+        if ($this->isOnlyEmoji($string)) {
+            $string = str_replace('-' . $sender . '.jpg', '-neutral.jpg', $string);
         }
 
         return $string;

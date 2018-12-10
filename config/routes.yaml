@@ -14,6 +14,14 @@ titelei:
   path:     /titelei
   controller: App\Controller\DefaultController::titelei
 
+titelei01:
+  path:     /titelei01
+  controller: App\Controller\DefaultController::titelei01
+
+titelei02:
+  path:     /titelei02
+  controller: App\Controller\DefaultController::titelei02
+
 footer:
   path:     /footer
   controller: App\Controller\DefaultController::footer
