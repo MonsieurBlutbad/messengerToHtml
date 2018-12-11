@@ -37,7 +37,7 @@ class ConvertEmojisCommand extends Command
     {
         $dir =  new \DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . self::TARGET_DIRECTORY);
         foreach ($dir as $fileinfo) {
-            if (!$fileinfo->isDot() && $fileinfo->isFile()) {
+            if (!$fileinfo->isDot() && $fileinfo->isFile() && $fileinfo->getFilename() === 'svg-thumb.png') {
                 foreach (self::COLORS as $key => $color) {
                     $processAsString = "convert " . self::TARGET_DIRECTORY . DIRECTORY_SEPARATOR . $fileinfo->getFilename()
                         . " -background " . $color . " -flatten "

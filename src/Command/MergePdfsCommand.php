@@ -31,7 +31,7 @@ class MergePdfsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         foreach (CreatePdfsCommand::BOOKS as $i => $files) {
-            $outputName = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . CreatePdfsCommand::OUTPUT_FOLDER . DIRECTORY_SEPARATOR . self::TARGET_DIRECTORY . DIRECTORY_SEPARATOR . $this->getMergedFileName('book-' . $i);
+            $outputName = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . CreatePdfsCommand::OUTPUT_FOLDER . DIRECTORY_SEPARATOR . mb_strtolower(CreatePdfsCommand::PAGE_SIZE) . DIRECTORY_SEPARATOR . self::TARGET_DIRECTORY . DIRECTORY_SEPARATOR . $this->getMergedFileName('book-' . $i);
 
             $cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$outputName ";
             //Add each pdf file to the end of the command
@@ -56,7 +56,7 @@ class MergePdfsCommand extends Command
 
     protected function getPathToPdf($name)
     {
-        return CreatePdfsCommand::OUTPUT_FOLDER . '/' . $name . '.pdf';
+        return CreatePdfsCommand::OUTPUT_FOLDER . DIRECTORY_SEPARATOR . mb_strtolower(CreatePdfsCommand::PAGE_SIZE) . DIRECTORY_SEPARATOR . $name . '.pdf';
     }
 
 }

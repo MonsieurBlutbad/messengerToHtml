@@ -93,14 +93,23 @@ class CreatePdfsCommand extends Command
             '2018-03-01',
         ]
     ];
-
-    const REMOVE_LAST_PAGE = [
-        '2017-12-30',
-        '2018-01-01',
-        '2018-01-06',
-        '2018-02-09',
-        '2018-02-14',
-    ];
+        const REMOVE_LAST_PAGE = [
+            'A4' => [],
+            'A5' => [
+                '2018-01-01',
+                '2018-01-06',
+                '2018-02-04',
+                '2018-02-10',
+                '2018-02-14',
+            ],
+    /*
+            '2017-12-30',
+            '2018-01-01',
+            '2018-01-06',
+            '2018-02-09',
+            '2018-02-14',
+        */
+        ];
 
     protected function configure()
     {
@@ -140,7 +149,7 @@ class CreatePdfsCommand extends Command
                 $this->process($processAsString, $output);
                 $pageCount = $this->countPages($this->getRelativePathToPdf($chapter));
                 $totalPageCount += $pageCount;
-                if (in_array($chapter, self::REMOVE_LAST_PAGE, true)) {
+                if (in_array($chapter, self::REMOVE_LAST_PAGE[self::PAGE_SIZE], true)) {
                     $totalPageCount --;
                 }
                 $output->writeln($pageCount . '/' . $totalPageCount . ' pages');
@@ -201,6 +210,6 @@ class CreatePdfsCommand extends Command
 
     protected function getPathToPdf($name)
     {
-        return self::OUTPUT_FOLDER . '/' . $name . '.pdf';
+        return self::OUTPUT_FOLDER . DIRECTORY_SEPARATOR . mb_strtolower(self::PAGE_SIZE) . DIRECTORY_SEPARATOR . $name . '.pdf';
     }
 }
